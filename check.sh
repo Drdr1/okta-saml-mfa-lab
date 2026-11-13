@@ -22,7 +22,7 @@ log "System Log for the app, last ${SINCE_MINUTES} min (challenge -> MFA -> SSO)
 api_ok GET "/api/v1/logs?since=$(uri "$since")&limit=200&filter=$(uri "target.id eq \"$APP_ID\"")" \
   | jq -r 'sort_by(.published)[] | "  \(.published[11:19])  \(.eventType | .[0:38] | . + (" " * (38 - length)))  \(.outcome.result | . + (" " * (10 - length)))  \(.actor.alternateId)"'
 
-log "Denied or failed events for Omar"
-api_ok GET "/api/v1/logs?since=$(uri "$since")&limit=100&filter=$(uri "actor.id eq \"$OMAR_ID\" and outcome.result ne \"SUCCESS\"")" \
+log "Omar: denied or failed events (open the SP login URL as Omar to create one)"
+api_ok GET "/api/v1/logs?since=$(uri "$since")&limit=100&filter=$(uri "actor.id eq \"$OMAR_ID\" and (outcome.result eq \"DENY\" or outcome.result eq \"FAILURE\")")" \
   | jq -r 'if length == 0 then "  (none yet: open the SP login URL as Omar to generate one)" else
       (sort_by(.published)[] | "  \(.published[11:19])  \(.eventType)  \(.outcome.result)  \(.outcome.reason // "")") end'
