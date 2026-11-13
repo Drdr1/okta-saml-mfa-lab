@@ -60,6 +60,7 @@ Then:
   20:08:08  policy.evaluate_sign_on                  CHALLENGE   you+sara@gmail.com
   20:08:33  user.authentication.verify               SUCCESS     you+sara@gmail.com
   20:08:34  user.authentication.sso                  SUCCESS     you+sara@gmail.com
+  20:30:14  app.generic.unauth_app_access_attempt   FAILURE     you+omar@gmail.com
 ```
 
 The log shows the policy challenging Sara for this app specifically, Okta Verify passing, and then SSO.
